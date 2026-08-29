@@ -1,8 +1,8 @@
-﻿using NuevaAndinia.Core;
+﻿using Goru.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace NuevaAndinia.Inputs
+namespace Goru.Inputs
 {
     public class InputProvider : MonoBehaviour, IInputProvider
     {

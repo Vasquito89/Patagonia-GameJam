@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace NuevaAndinia.Animation
+namespace Goru.Animation
 {
-    using NuevaAndinia.Audio;
-    using NuevaAndinia.Core;
+    using Goru.Audio;
+    using Goru.Core;
 
     [RequireComponent(typeof(Animator))]
     public class PersonAnimationController : MonoBehaviour, IPlayerAnimator

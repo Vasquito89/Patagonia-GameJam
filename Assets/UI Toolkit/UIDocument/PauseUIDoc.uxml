@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSS/ButtonPause.uss?fileID=7433441132597879392&amp;guid=1fd0f2d61ebae1d419a45ee71fd3483d&amp;type=3#ButtonPause"/>
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:ScrollView name="AudioScrollView" style="position: absolute; height: 118px; width: 208px; top: 154px; left: 135px;">
+            <ui:Button text="Continuar" name="ResumeButton" class="SelectButton"/>
+            <ui:Button text="Salir" name="QuitButton" class="SelectButton"/>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

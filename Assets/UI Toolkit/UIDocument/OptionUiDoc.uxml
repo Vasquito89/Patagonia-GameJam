@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSS/SliderSound.uss?fileID=7433441132597879392&amp;guid=6db806353532f7a459830048df71cb99&amp;type=3#SliderSound"/>
+    <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI%20Toolkit/RenderTexture/OptionRenderTexture.renderTexture?fileID=8400000&amp;guid=6a254a9969bcad344a83692d479b271e&amp;type=2#OptionRenderTexture&quot;);">
+        <ui:Label text="Opciones de Audio" style="position: absolute; top: 25px; left: 61px; -unity-font-definition: url(&quot;project://database/Assets/Font/Brush%20King.otf?fileID=12800000&amp;guid=126479f800f04484fb9fdd7dca006ca1&amp;type=3#Brush King&quot;); color: rgb(255, 255, 255);"/>
+        <ui:ScrollView style="position: absolute; height: 185px; width: 238px; top: 83px; left: 35px;">
+            <ui:Slider label="Sonido General" value="42" high-value="100" class="SelectSlider"/>
+            <ui:Slider label="Menu Principal" value="42" high-value="100" class="SelectSlider"/>
+            <ui:Slider label="Sonido FX" value="42" high-value="100" class="SelectSlider"/>
+            <ui:Toggle label="Silenciar" class="SelectSlider"/>
+        </ui:ScrollView>
+        <ui:Label text="[Espacio] para salir" style="position: absolute; top: 337px; left: 76px; color: rgb(245, 245, 245); -unity-font-definition: url(&quot;project://database/Assets/Font/BebasNeue-Regular.ttf?fileID=12800000&amp;guid=6855240a754d7bd4e8adafe1bc946d4e&amp;type=3#BebasNeue-Regular&quot;);"/>
+    </ui:VisualElement>
+</ui:UXML>

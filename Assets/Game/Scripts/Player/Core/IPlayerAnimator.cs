@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace NuevaAndinia.Core
+namespace Goru.Core
 {
     public interface IPlayerAnimator
     {

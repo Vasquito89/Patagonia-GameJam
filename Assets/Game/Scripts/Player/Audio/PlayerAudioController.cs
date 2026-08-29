@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace NuevaAndinia.Audio
+namespace Goru.Audio
 {
-    using NuevaAndinia.Core;
+    using Goru.Core;
 
     public class PlayerAudioController : MonoBehaviour, IPlayerAudio
     {

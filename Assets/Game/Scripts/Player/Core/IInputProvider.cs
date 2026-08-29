@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace NuevaAndinia.Core
+namespace Goru.Core
 {
     // Abstracción para los datos de entrada del jugador
     public interface IInputProvider

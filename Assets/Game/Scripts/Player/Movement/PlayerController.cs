@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-namespace NuevaAndinia.Movement
+namespace Goru.Movement
 {
-    using NuevaAndinia.Animation;
-    using NuevaAndinia.Audio;
-    using NuevaAndinia.Core;
-    using NuevaAndinia.Inputs;
+    using Goru.Animation;
+    using Goru.Audio;
+    using Goru.Core;
+    using Goru.Inputs;
     using UnityEngine.Rendering;
 
     [RequireComponent(typeof(CharacterController))]

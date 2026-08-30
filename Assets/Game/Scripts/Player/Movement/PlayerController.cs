@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections;
 
 namespace Goru.Movement
 {
@@ -19,13 +21,6 @@ namespace Goru.Movement
         [SerializeField] private float runHoldThreshold = 0.25f; // tiempo para pasar de caminar a correr
         [SerializeField] private float moveHoldTime = 0f;
         
-
-        [Header("Configuración de Energía")]
-        [SerializeField] private float maxResistence = 100f;
-        [SerializeField] private float currentResistence = 100f;
-        [SerializeField] private float fatigueThreshold = 25f; // Umbral para activar Sneak
-        [SerializeField] private float runEnergyCost = 15f; // Costo por segundo al correr
-        [SerializeField] private float energyFromEating = 35f;
 
         [Range(0.0f, 0.3f)] private float rotationSmoothTime = 0.12f;
         [SerializeField] private float speedChangeRate = 10.0f;
@@ -57,6 +52,13 @@ namespace Goru.Movement
 
         private float _targetRotation;
 
+        [SerializeField] private int vida = 20;
+        [SerializeField] private int energy = 200;
+        [SerializeField] private float timeInvulnerable = 5f;
+        [SerializeField] private GameObject baldeDeAgua;
+        bool invunerable = false;
+        SpriteRenderer sr;
+
         public bool IsGrounded { get; private set; }
         public bool IsResistence { get; private set; }
 
@@ -73,6 +75,7 @@ namespace Goru.Movement
         {
             _jumpTimeoutDelta = jumpTimeout;
             _fallTimeoutDelta = fallTimeout;
+            invunerable = false;
         }
 
         private void Update()
@@ -163,7 +166,7 @@ namespace Goru.Movement
                 targetDirection.normalized * (_speed * Time.deltaTime) +
                 new Vector3(0f, _verticalVelocity, 0f) * Time.deltaTime);
 
-            _anim?.UpdateMovement(_animationBlend, inputMagnitude, currentResistence);
+            _anim?.UpdateMovement(_animationBlend, inputMagnitude, energy);
 
             
         }
@@ -239,5 +242,51 @@ namespace Goru.Movement
             if (_verticalVelocity < _terminalVelocity)
                 _verticalVelocity += gravity * Time.deltaTime;
         }
-    }
+        public void OnColissionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Fruta"))
+            {
+                energy +=30;
+                Destroy(collision.gameObject, 3);
+            }
+        }
+        public void OnTriggerEnter (Collider collision)
+        {
+            if(collision.gameObject.CompareTag("Fire"))
+            {
+                vida -= 20;
+                if(vida <= 0)
+                {
+                    Morir();
+                }
+                StartCoroutine(Invulnerabilidad());
+            }
+            if(collision.gameObject.CompareTag("Water"))
+            {
+                vida += 10;
+            }
+        } 
+        IEnumerator Invulnerabilidad()
+        {
+            invunerable = true;
+            float tiempo = 0f;
+            while (tiempo < timeInvulnerable)
+            {
+                sr.enabled = true;
+                yield return new WaitForSeconds(0.1f);
+
+                sr.enabled =true;
+                yield return new WaitForSeconds(0.1f);
+                tiempo += 0.2f;
+            }
+            sr.enabled = true;
+            invunerable = false;
+        }
+
+        void Morir()
+        {
+            _speed = 0f;
+            _anim?.SetDeath(true);
+        }
+      }  
 }

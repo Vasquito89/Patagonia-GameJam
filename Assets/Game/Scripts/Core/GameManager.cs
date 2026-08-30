@@ -34,7 +34,7 @@ namespace Guru.Gameplay
             Vector3 playerInstate = new Vector3(0.273926f, 3f, 185.111f);
             Quaternion playerRotate = Quaternion.Euler(0f, 125.247f, 0f);
 
-            // Instancia el clon directamente con la posición y rotación correctas
+            // Instancia el clon directamente con la posiciï¿½n y rotaciï¿½n correctas
             Instantiate(playerPrefab, playerInstate, playerRotate);
         }
 

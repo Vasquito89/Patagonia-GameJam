@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96371d8cb21c48a488aaed3547eca09e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  fire: {fileID: 3698002725694807720}
-  smoke: {fileID: 3772407817499565712}
+  fire: {fileID: 3772407817499565712}
+  smoke: {fileID: 3698002725694807720}
   baldasoDeAgua: 0
   extingido: 0
   vida: 0

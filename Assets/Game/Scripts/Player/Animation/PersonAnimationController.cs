@@ -19,6 +19,7 @@ namespace Goru.Animation
         private int _idResistence;
         private int _idIsAlert;
         private int _idEat;
+        private int _idDeath;
 
         private void Awake()
         {
@@ -53,6 +54,7 @@ namespace Goru.Animation
         public void SetGrounded(bool value) => _anim.SetBool(_idGrounded, value);
         public void SetEat(bool value) => _anim.SetBool(_idEat, value);
         public void SetAlert(bool value) => _anim.SetBool(_idIsAlert, value);
+        public void SetDeath (bool value) => _anim.SetBool(_idDeath, value);
 
         private void OnFootstep(AnimationEvent evt)
         {

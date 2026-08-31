@@ -1,6 +1,8 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace Goru.Movement
 {
@@ -8,21 +10,16 @@ namespace Goru.Movement
     using Goru.Audio;
     using Goru.Core;
     using Goru.Inputs;
-    using UnityEngine.Rendering;
 
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
         [Header("Movement Configuration")]
-        [SerializeField] private float moveSpeed = 2.0f;  // caminar
-        //[SerializeField] private float runSpeed = 3.5f;         // correr
+        [SerializeField] private float moveSpeed = 2.0f;
         [SerializeField] private float walkingTired = 1.2f;
-        [SerializeField] private float sprintSpeed = 5.335f;  // sprint
-        [SerializeField] private float runHoldThreshold = 0.25f; // tiempo para pasar de caminar a correr
-        [SerializeField] private float moveHoldTime = 0f;
-        
+        [SerializeField] private float sprintSpeed = 5.335f;
 
-        [Range(0.0f, 0.3f)] private float rotationSmoothTime = 0.12f;
+        [Range(0.0f, 0.3f)][SerializeField] private float rotationSmoothTime = 0.12f;
         [SerializeField] private float speedChangeRate = 10.0f;
 
         [Header("Jump & Gravity")]
@@ -35,6 +32,7 @@ namespace Goru.Movement
         [SerializeField] private float groundedOffset = 0.25f;
         [SerializeField] private float groundedRadius = 0.28f;
         [SerializeField] private LayerMask groundLayers;
+        [SerializeField] private LayerMask LayerFuego;
 
         private InputProvider _input;
         private PersonAnimationController _anim;
@@ -49,37 +47,65 @@ namespace Goru.Movement
 
         private float _jumpTimeoutDelta;
         private float _fallTimeoutDelta;
-
         private float _targetRotation;
 
-        [SerializeField] private int vida = 20;
-        [SerializeField] private int energy = 200;
+        [Header("Player Stats & Water")]
+        public int vida = 20;
+        public int energy = 200;
         [SerializeField] private float timeInvulnerable = 5f;
-        [SerializeField] private GameObject baldeDeAgua;
-        bool invunerable = false;
-        SpriteRenderer sr;
+        [SerializeField] private Collider ColliderAgua;
+        [SerializeField] private bool CubetaVacia = true;
+        [SerializeField] private bool PuedeUsarAgua = false;
+        [SerializeField] private bool estaEnAgua = false;
+        [SerializeField] private bool CargandoAgua = false;
+        [SerializeField] private bool EstaCercaDelFuego = false;
+        private bool invulnerable = false;
+
+        private UIDocument uiDocument;
+        private VisualElement rootVisualElement;
+        private VisualElement Derrota;
 
         public bool IsGrounded { get; private set; }
-        public bool IsResistence { get; private set; }
 
         private void Awake()
         {
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<InputProvider>();
             _anim = GetComponent<PersonAnimationController>();
-
             _mainCamera = Camera.main;
+        }
+
+        private void OnEnable()
+        {
+            uiDocument = FindAnyObjectByType<UIDocument>();
+            rootVisualElement = uiDocument.rootVisualElement;
+            if (rootVisualElement != null)
+            {
+                Derrota = rootVisualElement.Q<VisualElement>("DerrotaVE");
+            }
+         
         }
 
         private void Start()
         {
             _jumpTimeoutDelta = jumpTimeout;
             _fallTimeoutDelta = fallTimeout;
-            invunerable = false;
+            invulnerable = false;
+            PuedeUsarAgua = false;
         }
 
         private void Update()
         {
+            if (estaEnAgua && _input.BaldeRequested && CubetaVacia && !CargandoAgua)
+            {
+                StartCoroutine(CargarCubeta());
+            }
+
+            if (EstaCercaDelFuego && PuedeUsarAgua && _input.SecarRequested)
+            {
+                UsarAgua();
+            }
+
             GroundedCheck();
             HandleJumpAndGravity();
             HandleMovement();
@@ -87,44 +113,23 @@ namespace Goru.Movement
 
         private void GroundedCheck()
         {
-            Vector3 spherePos = new Vector3(
-                transform.position.x,
-                transform.position.y - groundedOffset,
-                transform.position.z);
-
-            IsGrounded = Physics.CheckSphere(
-                spherePos,
-                groundedRadius,
-                groundLayers,
-                QueryTriggerInteraction.Ignore);
-
+            Vector3 spherePos = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
+            IsGrounded = Physics.CheckSphere(spherePos, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
             _anim?.SetGrounded(IsGrounded);
-            Debug.Log("Grounded = " + IsGrounded);
         }
 
         private void HandleMovement()
         {
             Vector2 moveInput = _input.MoveInput;
-            bool sprint = _input.SprintRequested;
-            
-
             float targetSpeed = GetTargetSpeed();
-            if (moveInput == Vector2.zero) targetSpeed = 0f;
 
-            float currentHorizontalSpeed =
-                new Vector3(_controller.velocity.x, 0f, _controller.velocity.z).magnitude;
-
+            float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0f, _controller.velocity.z).magnitude;
             float speedOffset = 0.1f;
             float inputMagnitude = moveInput.magnitude;
 
-            if (currentHorizontalSpeed < targetSpeed - speedOffset ||
-                currentHorizontalSpeed > targetSpeed + speedOffset)
+            if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
             {
-                _speed = Mathf.Lerp(
-                    currentHorizontalSpeed,
-                    targetSpeed * inputMagnitude,
-                    Time.deltaTime * speedChangeRate);
-
+                _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * speedChangeRate);
                 _speed = Mathf.Round(_speed * 1000f) / 1000f;
             }
             else
@@ -132,11 +137,7 @@ namespace Goru.Movement
                 _speed = targetSpeed;
             }
 
-            _animationBlend = Mathf.Lerp(
-                _animationBlend,
-                targetSpeed,
-                Time.deltaTime * speedChangeRate);
-
+            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * speedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
 
             Vector3 inputDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
@@ -144,66 +145,27 @@ namespace Goru.Movement
             if (moveInput != Vector2.zero)
             {
                 float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
+                if (_mainCamera != null) targetRotation += _mainCamera.transform.eulerAngles.y;
 
-                if (_mainCamera != null)
-                    targetRotation += _mainCamera.transform.eulerAngles.y;
-
-                float rotation = Mathf.SmoothDampAngle(
-                    transform.eulerAngles.y,
-                    targetRotation,
-                    ref _rotationVelocity,
-                    rotationSmoothTime);
-
+                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref _rotationVelocity, rotationSmoothTime);
                 transform.rotation = Quaternion.Euler(0f, rotation, 0f);
-
                 _targetRotation = targetRotation;
             }
 
-            Vector3 targetDirection =
-                Quaternion.Euler(0f, _targetRotation, 0f) * Vector3.forward;
-
-            _controller.Move(
-                targetDirection.normalized * (_speed * Time.deltaTime) +
-                new Vector3(0f, _verticalVelocity, 0f) * Time.deltaTime);
+            Vector3 targetDirection = Quaternion.Euler(0f, _targetRotation, 0f) * Vector3.forward;
+            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0f, _verticalVelocity, 0f) * Time.deltaTime);
 
             _anim?.UpdateMovement(_animationBlend, inputMagnitude, energy);
-
-            
         }
+
         private float GetTargetSpeed()
         {
             Vector2 moveInput = _input.MoveInput;
-            float targetSpeed;
+            if (moveInput == Vector2.zero) return 0f;
 
-            // si no hay input → no se mueve
-            if (moveInput == Vector2.zero)
-            {
-                moveHoldTime = 0f;
-                return 0f;
-            }
+            float targetSpeed = moveSpeed;
+            if (_input.SprintRequested) targetSpeed = sprintSpeed;
 
-            // acumular tiempo de movimiento
-            moveHoldTime += Time.deltaTime;
-
-            // 1) caminar
-             targetSpeed = moveSpeed;
-            //currentResistence--;
-             Debug.Log("Caminando");
-
-            if (!IsResistence && _input.SprintRequested)
-                targetSpeed = walkingTired;
-            //2) correr (si mantiene apretado)
-            //if (moveHoldTime >= runHoldThreshold)
-            //targetSpeed = runSpeed;
-
-            // 3) sprint (si presiona la tecla)
-
-            if (_input.SprintRequested && moveInput.magnitude >= 0.01f)
-            {
-                targetSpeed = sprintSpeed;
-            }
-
-            
             return targetSpeed;
         }
 
@@ -212,12 +174,10 @@ namespace Goru.Movement
             if (IsGrounded)
             {
                 _fallTimeoutDelta = fallTimeout;
-
                 _anim?.SetJump(false);
                 _anim?.SetFreeFall(false);
 
-                if (_verticalVelocity < 0f)
-                    _verticalVelocity = -2f;
+                if (_verticalVelocity < 0f) _verticalVelocity = -2f;
 
                 if (_input.JumpRequested && _jumpTimeoutDelta <= 0f)
                 {
@@ -226,8 +186,7 @@ namespace Goru.Movement
                     _input.ConsumeJump();
                 }
 
-                if (_jumpTimeoutDelta >= 0f)
-                    _jumpTimeoutDelta -= Time.deltaTime;
+                if (_jumpTimeoutDelta >= 0f) _jumpTimeoutDelta -= Time.deltaTime;
             }
             else
             {
@@ -242,51 +201,124 @@ namespace Goru.Movement
             if (_verticalVelocity < _terminalVelocity)
                 _verticalVelocity += gravity * Time.deltaTime;
         }
-        public void OnColissionEnter(Collision collision)
+
+        public void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.CompareTag("Fruta"))
+            if (collision.gameObject.CompareTag("Frutapala"))
             {
-                energy +=30;
-                Destroy(collision.gameObject, 3);
+                energy += 30;
+                Destroy(collision.gameObject);
+            }
+            else if (collision.gameObject.CompareTag("Murtilla"))
+            {
+                energy += 60;
+                Destroy(collision.gameObject);
+            }
+            else if (collision.gameObject.CompareTag("Fire") && !invulnerable)
+            {
+                RecibirDano(1);
             }
         }
-        public void OnTriggerEnter (Collider collision)
+
+        public void OnTriggerStay(Collider collision)
         {
-            if(collision.gameObject.CompareTag("Fire"))
+            if (collision.gameObject.CompareTag("Water"))
             {
-                vida -= 20;
-                if(vida <= 0)
-                {
-                    Morir();
-                }
+                if (vida < 100) vida += 1;
+                estaEnAgua = true;
+            }
+            else if (collision.gameObject.CompareTag("AguaProfunda"))
+            {
+                RecibirDano(25);
+            }
+        }
+
+        private void OnTriggerEnter(Collider collision)
+        {
+            if (collision.CompareTag("Fire")) EstaCercaDelFuego = true;
+        }
+
+        private void OnTriggerExit(Collider collision)
+        {
+            if (collision.CompareTag("Water")) estaEnAgua = false;
+            if (collision.CompareTag("Fire")) EstaCercaDelFuego = false;
+        }
+
+        private void RecibirDano(int cantidad)
+        {
+            vida -= cantidad;
+            if (vida <= 0)
+            {
+                Morir();
+            }
+            else
+            {
                 StartCoroutine(Invulnerabilidad());
             }
-            if(collision.gameObject.CompareTag("Water"))
+        }
+
+        IEnumerator CargarCubeta()
+        {
+            CargandoAgua = true;
+            Debug.Log("Cargando agua...");
+
+            yield return new WaitForSeconds(3f);
+
+            CubetaVacia = false;
+            PuedeUsarAgua = true;
+            CargandoAgua = false;
+            Debug.Log("¡Balde lleno!");
+        }
+
+        void UsarAgua()
+        {
+            if (!PuedeUsarAgua || CubetaVacia) return;
+
+            // Se consume el agua del balde
+            PuedeUsarAgua = false;
+            CubetaVacia = true; // <-- Habilita para poder recargar de nuevo en el agua
+
+            if (ColliderAgua != null) ColliderAgua.enabled = true;
+
+            StartCoroutine(DesactivarAgua());
+        }
+
+        IEnumerator DesactivarAgua()
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            // Detecta los fuegos cercanos en la capa LayerFuego
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 6f, LayerFuego);
+
+            foreach (Collider hit in hitColliders)
             {
-                vida += 10;
+                // Busca el script Fuego en el objeto impactado o en sus componentes superiores
+                Fuego fuegoScript = hit.GetComponentInParent<Fuego>();
+                if (fuegoScript != null && !fuegoScript.extinguido)
+                {
+                    fuegoScript.TirarAgua();
+                }
             }
-        } 
+
+            if (ColliderAgua != null) ColliderAgua.enabled = false;
+        }
+
         IEnumerator Invulnerabilidad()
         {
-            invunerable = true;
-            float tiempo = 0f;
-            while (tiempo < timeInvulnerable)
-            {
-                sr.enabled = true;
-                yield return new WaitForSeconds(0.1f);
-
-                sr.enabled =true;
-                yield return new WaitForSeconds(0.1f);
-                tiempo += 0.2f;
-            }
-            sr.enabled = true;
-            invunerable = false;
+            invulnerable = true;
+            yield return new WaitForSeconds(timeInvulnerable);
+            invulnerable = false;
         }
 
         void Morir()
         {
-            _speed = 0f;
+            vida = 0;
             _anim?.SetDeath(true);
+            Debug.Log("se ejecuto la animacion");
+            _speed = 0f;
+            Derrota.style.display = DisplayStyle.Flex;
+            Time.timeScale = 0f;
+            
         }
-      }  
+    }
 }

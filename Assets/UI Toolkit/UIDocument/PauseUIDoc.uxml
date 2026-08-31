@@ -1,9 +1,26 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/StyleSS/ButtonPause.uss?fileID=7433441132597879392&amp;guid=1fd0f2d61ebae1d419a45ee71fd3483d&amp;type=3#ButtonPause"/>
-    <ui:VisualElement style="flex-grow: 1;">
-        <ui:ScrollView name="AudioScrollView" style="position: absolute; height: 118px; width: 208px; top: 154px; left: 135px;">
-            <ui:Button text="Continuar" name="ResumeButton" class="SelectButton"/>
-            <ui:Button text="Salir" name="QuitButton" class="SelectButton"/>
-        </ui:ScrollView>
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSS/ButtonPause.uss?fileID=7433441132597879392&amp;guid=1fd0f2d61ebae1d419a45ee71fd3483d&amp;type=3"/>
+    <ui:VisualElement style="flex-grow: 1; width: 1024px; height: 768px;">
+        <ui:VisualElement name="PauseVE" style="flex-grow: 1; display: none;">
+            <ui:ScrollView name="PauseScrollView" style="position: absolute; height: 182px; width: 302px; top: 366px; left: 387px;">
+                <ui:Button text="Continuar" name="ResumeButton" class="SelectButton"/>
+                <ui:Button text="Salir" name="QuitButton" class="SelectButton"/>
+            </ui:ScrollView>
+        </ui:VisualElement>
+        <ui:VisualElement name="HUDVE" style="flex-grow: 1; position: absolute; height: 768px; top: 0; width: 1024px; display: flex;">
+            <ui:Label text="Label" name="TiempoLabel" style="position: absolute; top: -2px; left: 400px; width: 452px; font-size: 28px;"/>
+            <ui:Label text="Label" name="VidaLabel" style="position: absolute; width: 159px; font-size: 28px;"/>
+            <ui:Image style="position: absolute; height: 200px; width: 200px; top: 460px; left: 750px; background-size: 256% 256%; background-image: url(&quot;project://database/Assets/UI%20Toolkit/RenderTexture/MapaRenderTexture.renderTexture?fileID=8400000&amp;guid=488d40e3e73bba34c94883c236e2f29c&amp;type=2#MapaRenderTexture&quot;); border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; background-position-y: center; background-position-x: center; -unity-background-scale-mode: scale-to-fit;"/>
+            <ui:Label text="Label" name="VidaFuegoLabel" style="position: absolute; font-size: 28px; top: 57px; left: 1px; width: 219px;"/>
+            <ui:Label text="Apaga el Fuego!!" name="AdvertenciaLabel" style="position: absolute; font-size: 28px; top: 177px; left: 659px; width: 286px; height: 55px;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="DerrotaVE" style="flex-grow: 1; display: none; width: 1024px; height: 768px;">
+            <ui:Label text="Perdiste!" name="DerrotaLabel" style="position: absolute; top: 223px; left: 411px; width: 156px; height: 48px; font-size: 35px;"/>
+            <ui:Button text="Menu" name="MenuButton" style="position: absolute; top: 514px; left: 427px; width: 153px; font-size: 29px;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="VictoriaVE" style="flex-grow: 1; display: none; width: 1024px; height: 768px;">
+            <ui:Label text="Has ganado" name="VictoriaLabel" style="position: absolute; top: 173px; left: 394px; font-size: 35px;"/>
+            <ui:Button text="Aceptar" name="AceptarButton" style="position: absolute; top: 499px; left: 437px; width: 146px; font-size: 29px;"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

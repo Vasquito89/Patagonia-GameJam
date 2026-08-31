@@ -38,6 +38,7 @@ namespace Goru.Animation
             _idResistence = Animator.StringToHash("Resistence");
             _idIsAlert = Animator.StringToHash("IsAlert");
             _idEat = Animator.StringToHash("Eat");
+            _idDeath = Animator.StringToHash("Death");
 
         }
 

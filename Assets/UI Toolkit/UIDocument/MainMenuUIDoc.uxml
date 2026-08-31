@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/StyleSS/ButtonMenu.uss?fileID=7433441132597879392&amp;guid=d1f9424b447fddf4bb52be483951f4fc&amp;type=3#ButtonMenu"/>
     <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI%20Toolkit/RenderTexture/MenuRenderTexture.renderTexture?fileID=8400000&amp;guid=1752a75040d269346ab0eb69d72cdb6d&amp;type=2#MenuRenderTexture&quot;);">
-        <ui:ScrollView style="position: absolute; top: 198px; left: 241px; width: 234px; height: 143px;">
+        <ui:ScrollView focusable="false" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" nested-interaction-kind="ForwardScrolling" style="position: absolute; top: 390px; left: 345px; width: 337px; height: 236px;">
             <ui:Button text="Jugar" name="MatchButton" class="Select"/>
             <ui:Button text="Opciones" name="OptionButton" class="Select"/>
             <ui:Button text="Salir" name="QuitButton" class="Select"/>

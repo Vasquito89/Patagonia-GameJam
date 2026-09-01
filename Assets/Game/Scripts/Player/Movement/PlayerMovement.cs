@@ -10,9 +10,10 @@ namespace Goru.Movement
     using Goru.Audio;
     using Goru.Core;
     using Goru.Inputs;
+    using Goru.Controller;
 
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour
     {
         [Header("Movement Configuration")]
         [SerializeField] private float moveSpeed = 2.0f;
@@ -38,6 +39,7 @@ namespace Goru.Movement
         private PersonAnimationController _anim;
         private CharacterController _controller;
         private Camera _mainCamera;
+        private PlayerController _playerController;
 
         private float _speed;
         private float _animationBlend;
@@ -48,18 +50,6 @@ namespace Goru.Movement
         private float _jumpTimeoutDelta;
         private float _fallTimeoutDelta;
         private float _targetRotation;
-
-        [Header("Player Stats & Water")]
-        public int vida = 20;
-        public int energy = 200;
-        [SerializeField] private float timeInvulnerable = 5f;
-        [SerializeField] private Collider ColliderAgua;
-        [SerializeField] private bool CubetaVacia = true;
-        [SerializeField] private bool PuedeUsarAgua = false;
-        [SerializeField] private bool estaEnAgua = false;
-        [SerializeField] private bool CargandoAgua = false;
-        [SerializeField] private bool EstaCercaDelFuego = false;
-        private bool invulnerable = false;
 
         private UIDocument uiDocument;
         private VisualElement rootVisualElement;
@@ -73,6 +63,7 @@ namespace Goru.Movement
             _input = GetComponent<InputProvider>();
             _anim = GetComponent<PersonAnimationController>();
             _mainCamera = Camera.main;
+            _playerController = GetComponent<PlayerController>();
         }
 
         private void OnEnable()
@@ -90,22 +81,10 @@ namespace Goru.Movement
         {
             _jumpTimeoutDelta = jumpTimeout;
             _fallTimeoutDelta = fallTimeout;
-            invulnerable = false;
-            PuedeUsarAgua = false;
         }
 
         private void Update()
         {
-            if (estaEnAgua && _input.BaldeRequested && CubetaVacia && !CargandoAgua)
-            {
-                StartCoroutine(CargarCubeta());
-            }
-
-            if (EstaCercaDelFuego && PuedeUsarAgua && _input.SecarRequested)
-            {
-                UsarAgua();
-            }
-
             GroundedCheck();
             HandleJumpAndGravity();
             HandleMovement();
@@ -155,7 +134,7 @@ namespace Goru.Movement
             Vector3 targetDirection = Quaternion.Euler(0f, _targetRotation, 0f) * Vector3.forward;
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0f, _verticalVelocity, 0f) * Time.deltaTime);
 
-            _anim?.UpdateMovement(_animationBlend, inputMagnitude, energy);
+            _anim?.UpdateMovement(_animationBlend, inputMagnitude, _playerController.energy);
         }
 
         private float GetTargetSpeed()
@@ -202,117 +181,9 @@ namespace Goru.Movement
                 _verticalVelocity += gravity * Time.deltaTime;
         }
 
-        public void OnCollisionEnter(Collision collision)
+        public void Morir()
         {
-            if (collision.gameObject.CompareTag("Frutapala"))
-            {
-                energy += 30;
-                Destroy(collision.gameObject);
-            }
-            else if (collision.gameObject.CompareTag("Murtilla"))
-            {
-                energy += 60;
-                Destroy(collision.gameObject);
-            }
-            else if (collision.gameObject.CompareTag("Fire") && !invulnerable)
-            {
-                RecibirDano(1);
-            }
-        }
-
-        public void OnTriggerStay(Collider collision)
-        {
-            if (collision.gameObject.CompareTag("Water"))
-            {
-                if (vida < 100) vida += 1;
-                estaEnAgua = true;
-            }
-            else if (collision.gameObject.CompareTag("AguaProfunda"))
-            {
-                RecibirDano(25);
-            }
-        }
-
-        private void OnTriggerEnter(Collider collision)
-        {
-            if (collision.CompareTag("Fire")) EstaCercaDelFuego = true;
-        }
-
-        private void OnTriggerExit(Collider collision)
-        {
-            if (collision.CompareTag("Water")) estaEnAgua = false;
-            if (collision.CompareTag("Fire")) EstaCercaDelFuego = false;
-        }
-
-        private void RecibirDano(int cantidad)
-        {
-            vida -= cantidad;
-            if (vida <= 0)
-            {
-                Morir();
-            }
-            else
-            {
-                StartCoroutine(Invulnerabilidad());
-            }
-        }
-
-        IEnumerator CargarCubeta()
-        {
-            CargandoAgua = true;
-            Debug.Log("Cargando agua...");
-
-            yield return new WaitForSeconds(3f);
-
-            CubetaVacia = false;
-            PuedeUsarAgua = true;
-            CargandoAgua = false;
-            Debug.Log("¡Balde lleno!");
-        }
-
-        void UsarAgua()
-        {
-            if (!PuedeUsarAgua || CubetaVacia) return;
-
-            // Se consume el agua del balde
-            PuedeUsarAgua = false;
-            CubetaVacia = true; // <-- Habilita para poder recargar de nuevo en el agua
-
-            if (ColliderAgua != null) ColliderAgua.enabled = true;
-
-            StartCoroutine(DesactivarAgua());
-        }
-
-        IEnumerator DesactivarAgua()
-        {
-            yield return new WaitForSeconds(0.2f);
-
-            // Detecta los fuegos cercanos en la capa LayerFuego
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 6f, LayerFuego);
-
-            foreach (Collider hit in hitColliders)
-            {
-                // Busca el script Fuego en el objeto impactado o en sus componentes superiores
-                Fuego fuegoScript = hit.GetComponentInParent<Fuego>();
-                if (fuegoScript != null && !fuegoScript.extinguido)
-                {
-                    fuegoScript.TirarAgua();
-                }
-            }
-
-            if (ColliderAgua != null) ColliderAgua.enabled = false;
-        }
-
-        IEnumerator Invulnerabilidad()
-        {
-            invulnerable = true;
-            yield return new WaitForSeconds(timeInvulnerable);
-            invulnerable = false;
-        }
-
-        void Morir()
-        {
-            vida = 0;
+            _playerController.vida = 0;
             _anim?.SetDeath(true);
             Debug.Log("se ejecuto la animacion");
             _speed = 0f;

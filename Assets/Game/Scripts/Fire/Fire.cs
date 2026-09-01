@@ -1,14 +1,18 @@
+using Goru.Core;
+using Goru.Controller;
+using Goru.Inputs;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System.Collections;
 
-public class Fuego : MonoBehaviour
+public class Fire : MonoBehaviour, IInteractable
 {
     [Header("Referencias Visuales")]
     [SerializeField] private GameObject fire;
     [SerializeField] private GameObject smoke;
     [SerializeField] private ParticleSystem fireParticleSystem;
     [SerializeField] private UIDocument uiDocument;
+    private string mensajePrompt = "Presiona [Z] para apagar el fuego";
 
     [Header("Configuración de Salud y Estado")]
     [SerializeField] private int vidaMax = 20;
@@ -49,6 +53,11 @@ public class Fuego : MonoBehaviour
                 vidaFuegoLabel = rootVisualElement.Q<Label>("VidaFuegoLabel");
             }
         }
+        Debug.Log("Se va a apagar el label de advertencia");
+
+        StartCoroutine(ApagarLabel());
+
+        Debug.Log("Se apago el label de advertencia");
     }
 
     void Start()
@@ -67,8 +76,7 @@ public class Fuego : MonoBehaviour
 
         if (fire != null) fire.SetActive(true);
         if (smoke != null) smoke.SetActive(false);
-        StartCoroutine(ApagarLabel());
-        Debug.Log("Se va a apagar el label de advertencia");
+        
     }
 
     void Update()
@@ -102,20 +110,26 @@ public class Fuego : MonoBehaviour
 
             if (tiempoFuego != null)
             {
+                //vida = vida + ((int)(0.01));
+                vidaFuegoLabel.text = "Vida del fuego" + vida.ToString();
+                Debug.Log(vidaFuegoLabel.text);
                 tiempoFuego.style.display = DisplayStyle.Flex;
-                tiempoFuego.text = "¡FUEGO EXPANDIDO! Tiempo encendido: " + temporizadorConteo.ToString("F1") + "s";
+                tiempoFuego.text = "¡FUEGO EXPANDIDO! Tiempo encendido: " + temporizadorConteo.ToString("F1") + "s";                
             }
         }
     }
 
     public void TirarAgua()
     {
+        Debug.Log("Tirando agua");
         if (extinguido) return;
 
         // Le quitamos vida al fuego
         vida -= 20;
+        vidaFuegoLabel.text = "Vida del fuego" + vida.ToString();
 
         if (smoke != null) smoke.SetActive(true);
+
 
         // Si se quedó sin vida, lo apagamos completamente
         if (vida <= 0)
@@ -162,10 +176,23 @@ public class Fuego : MonoBehaviour
     {
         Debug.Log("Apagándose label");
 
-        yield return new WaitForSeconds(0.0f);
+        yield return new WaitForSeconds(2f);
 
         advertenciaLabel.style.display = DisplayStyle.None;
         Debug.Log("Estado del label display: " + advertenciaLabel.style.display.value);
         
+    }
+
+    public string GetInteractPrompt() => mensajePrompt;
+
+
+    public void Interact(PlayerController player)
+    {
+        // Validamos si el jugador tiene agua lista para usar
+        if (player.CanUseWater())
+        {
+            player.UsarAgua(); // Vacía el balde
+            TirarAgua();           // Aplica el daño al fuego y actualiza la UI
+        }
     }
 }

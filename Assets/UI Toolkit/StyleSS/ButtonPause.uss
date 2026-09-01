@@ -5,7 +5,7 @@
     -unity-font-definition: url("project://database/Assets/Font/BebasNeue-Regular.ttf?fileID=12800000&guid=6855240a754d7bd4e8adafe1bc946d4e&type=3#BebasNeue-Regular");
     transition-duration: 0.25s;
     background-color: rgb(255, 255, 255);
-    font-size: 29px;
+    font-size: 47px;
 }
 
 .SelectButton:focus {

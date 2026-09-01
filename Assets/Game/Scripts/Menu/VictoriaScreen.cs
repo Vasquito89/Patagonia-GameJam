@@ -17,6 +17,7 @@ public class VictoriaScreen : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             Victoria.style.display = DisplayStyle.Flex;
+            Time.timeScale = 0f;
         }
     }
 }

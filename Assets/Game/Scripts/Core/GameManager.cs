@@ -10,23 +10,10 @@ namespace Guru.Gameplay
         [SerializeField] private List<Transform> targetTransforms = new List<Transform>();
 
         [SerializeField] private GameObject playerPrefab;
-        [SerializeField] private GameObject firePrefab;
-        [SerializeField] private bool spawnAsChild = false;
-
-        Transform hitTarget;
 
         private void Start()
         {
             SpawnPlayer();
-        }
-
-
-        private void OnTriggerEnter(Collider collision)
-        {
-            if (collision.CompareTag("Player"))
-            {
-                
-            }
         }
 
         void SpawnPlayer()

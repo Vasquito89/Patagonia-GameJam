@@ -1,3 +1,4 @@
+using Goru.Controller;
 using Goru.Movement; // Importante para el nuevo Input System
 using UnityEngine;
 using UnityEngine.InputSystem;

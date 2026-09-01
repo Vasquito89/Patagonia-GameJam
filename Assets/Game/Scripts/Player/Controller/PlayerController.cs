@@ -1,0 +1,141 @@
+using System.Collections;
+using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
+
+
+
+namespace Goru.Controller
+{
+    using Goru.Movement;
+    using Goru.Inputs;
+
+    public class PlayerController : MonoBehaviour
+    {
+        [Header("Estado del Balde")]
+        public bool CubetaVacia = false;
+        public bool CargandoAgua = false;
+        public bool PuedeUsarAgua = false;
+
+        [Header("Player Stats & Water")]
+        public int vida = 20;
+        public int energy = 200;
+        [SerializeField] private float timeInvulnerable = 5f;
+        public bool EstaCercaDelFuego = false;
+        private bool invulnerable = false;
+        [SerializeField] private bool estaEnAgua = false;
+
+        private InputProvider _input;
+        private PlayerMovement _playerMovement;
+
+        private void Awake()
+        {
+            _input = GetComponent<InputProvider>();
+            _playerMovement = GetComponent<PlayerMovement>();
+        }
+        private void Start()
+        {
+            PuedeUsarAgua = false;
+        }
+        public void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Frutapala"))
+            {
+                energy += 30;
+                Destroy(collision.gameObject);
+            }
+            else if (collision.gameObject.CompareTag("Murtilla"))
+            {
+                energy += 60;
+                Destroy(collision.gameObject);
+            }
+            /*else if (collision.gameObject.CompareTag("Fire") && !invulnerable || !EstaCercaDelFuego)
+            {
+                RecibirDano(20);
+            }*/
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Fire"))
+            {
+                EstaCercaDelFuego = true;
+                RecibirDano(10);
+            }
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.CompareTag("Fire"))
+            {
+                EstaCercaDelFuego = false;
+            }
+        }
+
+        public void OnTriggerStay(Collider collision)
+        {
+            if (collision.gameObject.CompareTag("Water"))
+            {
+                estaEnAgua = true;
+                if (vida < 100) vida += 1;
+                estaEnAgua = false;
+            }
+            else if (collision.gameObject.CompareTag("AguaProfunda"))
+            {
+                RecibirDano(25);
+            }
+        }
+        // Métodos de verificación y acción invocados por los scripts interactuables
+        public bool CanUseWater() => PuedeUsarAgua && !CubetaVacia;
+        
+
+        public void UsarAgua()
+        {
+            if (CanUseWater())
+            {
+                CubetaVacia = true;
+                PuedeUsarAgua = false;
+                Debug.Log("Puede usar agua" +  PuedeUsarAgua);
+            }
+        }
+        public bool ICanCarryWater()
+        {
+            return CubetaVacia && !CargandoAgua;
+        }
+
+        // Permite que el script del Lago ordene comenzar la corrutina de carga
+        public void StartWaterFill()
+        {
+            if (ICanCarryWater())
+            {
+                StartCoroutine(CargarCubeta());
+                _input.ConsumeBalde();
+            }
+        }
+        
+        private void RecibirDano(int cantidad)
+        {
+            vida -= cantidad;
+            if (vida <= 0)
+            {
+                _playerMovement.Morir();
+            }
+            else
+            {
+                StartCoroutine(Invulnerabilidad());
+            }
+        }
+        public IEnumerator CargarCubeta()
+        {
+            Debug.Log("Entro a CargarCubeta");
+            CargandoAgua = true;
+            yield return new WaitForSeconds(2.0f); // Simulación de tiempo de llenado
+            CubetaVacia = false;
+            PuedeUsarAgua = true;
+            CargandoAgua = false;
+        }
+        IEnumerator Invulnerabilidad()
+        {
+            invulnerable = true;
+            yield return new WaitForSeconds(timeInvulnerable);
+            invulnerable = false;
+        }
+    }
+}

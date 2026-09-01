@@ -13,8 +13,8 @@ namespace Goru.Inputs
         public bool JumpRequested { get; private set; }
         public bool SprintRequested { get; private set; }
         public bool AnalogMovement { get; private set; }
-        public bool BaldeRequested =false;
-        public bool SecarRequested = false;
+        public bool BaldeRequested { get; private set; }
+        public bool SecarRequested { get; private set; }
 
         private float sprintHoldTime = 0f;
         private const float sprintThreshold = 0.25f; // tiempo para activar sprint
@@ -24,6 +24,8 @@ namespace Goru.Inputs
         private void Start()
         {
             JumpRequested = false;
+            BaldeRequested = false;
+            SecarRequested = false;
         }
 
         public void OnMove(InputValue value)
@@ -54,11 +56,12 @@ namespace Goru.Inputs
         }
         public void OnBalde(InputValue value)
         {
-            BaldeRequested = value.Get<float>() > 0.5f;
+                BaldeRequested = value.Get<float>() > 0.5f;
         }
+
         public void OnSecar(InputValue value)
         {
-            SecarRequested = value.Get<float>() > 0.5f;
+                SecarRequested = value.Get<float>() > 0.5f; 
         }
 
         private void Update()
@@ -78,5 +81,7 @@ namespace Goru.Inputs
         }
         public void ConsumeSprint()
         { SprintRequested = false; }
+        public void ConsumeBalde() { BaldeRequested = false; }
+        public void ConsumeSecar() { SecarRequested = false; }
     }
 }

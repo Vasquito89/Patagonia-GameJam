@@ -8,14 +8,16 @@
             </ui:ScrollView>
         </ui:VisualElement>
         <ui:VisualElement name="HUDVE" style="flex-grow: 1; position: absolute; height: 768px; top: 0; width: 1024px; display: flex;">
-            <ui:Label text="Label" name="TiempoLabel" style="position: absolute; top: -2px; left: 400px; width: 616px; font-size: 28px; background-color: rgb(87, 83, 83); color: rgb(255, 255, 255);"/>
+            <ui:Label text="Label" name="TiempoLabel" style="position: absolute; top: 704px; left: 17px; width: 616px; font-size: 28px; background-color: rgb(87, 83, 83); color: rgb(255, 255, 255);"/>
             <ui:Label text="Label" name="VidaLabel" style="position: absolute; width: 250px; font-size: 28px; color: rgb(255, 255, 255); background-color: rgb(87, 83, 83);"/>
             <ui:Image name="Mapa" style="position: absolute; height: 200px; width: 200px; top: 460px; left: 750px; background-size: 256% 256%; background-image: url(&quot;project://database/Assets/UI%20Toolkit/RenderTexture/MapaRenderTexture.renderTexture?fileID=8400000&amp;guid=488d40e3e73bba34c94883c236e2f29c&amp;type=2#MapaRenderTexture&quot;); border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; background-position-y: center; background-position-x: center; -unity-background-scale-mode: scale-to-fit;"/>
             <ui:Label text="Label" name="VidaFuegoLabel" style="position: absolute; font-size: 28px; top: 57px; left: 1px; width: 254px; color: rgb(255, 255, 255); background-color: rgb(87, 83, 83);"/>
             <ui:Label text="Apaga el Fuego!!" name="AdvertenciaLabel" style="position: absolute; font-size: 28px; top: 177px; left: 659px; width: 286px; height: 55px; background-color: rgb(87, 83, 83); color: rgb(255, 255, 255);"/>
             <ui:Label text="Label" name="PromptLabel" style="position: absolute; top: 173px; left: 39px; width: 456px; height: 49px; font-size: 28px; color: rgb(255, 255, 255); background-color: rgb(87, 83, 83); display: flex;"/>
-            <ui:Image style="position: absolute; height: 17px; width: 18px; top: 319px; left: 500px; background-image: none; background-color: rgb(24, 26, 26); border-top-left-radius: 50px; border-top-right-radius: 50px; border-bottom-right-radius: 50px; border-bottom-left-radius: 50px;"/>
+            <ui:Image style="position: absolute; height: 17px; width: 18px; top: 319px; left: 500px; background-image: none; background-color: rgb(24, 26, 26); border-top-left-radius: 50px; border-top-right-radius: 50px; border-bottom-right-radius: 50px; border-bottom-left-radius: 50px; display: none;"/>
             <ui:Label text="Label" name="LakeLabel" style="position: absolute; top: 173px; left: 39px; width: 456px; height: 49px; font-size: 28px; color: rgb(255, 255, 255); background-color: rgb(87, 83, 83);"/>
+            <ui:Label text="Label" name="TiempoVidaLabel" style="position: absolute; top: 6px; left: 651px; font-size: 28px; background-color: rgb(87, 83, 83); color: rgb(255, 255, 255); width: 360px;"/>
+            <ui:Label text="Label" name="EnergyLabel" style="position: absolute; top: -4px; left: 316px; font-size: 28px; height: 43px; background-color: rgb(87, 83, 83); color: rgb(255, 255, 255); width: 243px;"/>
         </ui:VisualElement>
         <ui:VisualElement name="DerrotaVE" style="flex-grow: 1; display: none; width: 1024px; height: 768px;">
             <ui:Label text="Perdiste!" name="DerrotaLabel" style="position: absolute; top: 223px; left: 411px; width: 156px; height: 48px; font-size: 35px; background-color: rgb(87, 83, 83); color: rgb(255, 255, 255);"/>

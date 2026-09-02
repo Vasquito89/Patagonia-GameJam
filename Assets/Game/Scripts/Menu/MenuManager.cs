@@ -31,7 +31,7 @@ public class MenuManager : MonoBehaviour
 
     public void StartMatchScene()
     {
-        SceneManager.LoadScene("Nivel1");
+        SceneManager.LoadScene("Transicion");
     }
 
     public void StartOptionScene()

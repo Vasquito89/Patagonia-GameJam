@@ -20,13 +20,19 @@ public class PauseMenuController : MonoBehaviour
     private Label vidaPlayer;
     private Label tiempoFuego;
     private Label advertenciaLabel;
-    private Label vidaFuegoLabel; 
+    private Label vidaFuegoLabel;
+    private Label tiempoVidaLabel;
+    private Label energyLabel;
     private bool isPaused = false;
     [SerializeField] private PlayerController player;
+    private PlayerMovement playerMove;
 
     // Referencia a tu Input Action Asset (puedes arrastrarlo desde el inspector)
     [SerializeField] private InputActionAsset inputActions;
     private InputAction pauseAction;
+
+    private float end = 180f;
+    private bool isPlaying = false;
 
     void Awake()
     {
@@ -65,10 +71,13 @@ public class PauseMenuController : MonoBehaviour
         tiempoFuego = rootVisualElement.Q<Label>("TiempoLabel");
         advertenciaLabel = rootVisualElement.Q<Label>("AdvertenciaLabel");
         vidaFuegoLabel = rootVisualElement.Q<Label>("VidaFuegoLabel");
+        tiempoVidaLabel = rootVisualElement.Q<Label>("TiempoVidaLabel");
+        energyLabel = rootVisualElement.Q<Label>("EnergyLabel");
 
         tiempoFuego.style.display = DisplayStyle.None;
         advertenciaLabel.style.display = DisplayStyle.None;
         vidaFuegoLabel.style.display = DisplayStyle.None;
+        tiempoVidaLabel.style.display = DisplayStyle.Flex;
 
         menuButton = rootVisualElement.Q<Button>("MenuButton");
         AceptarButton = rootVisualElement.Q<Button>("AceptarButton");
@@ -86,6 +95,10 @@ public class PauseMenuController : MonoBehaviour
             pauseAction.started += OnPauseTriggered;
             pauseAction.Enable();
         }
+        if(tiempoVidaLabel != null)
+        {
+            isPlaying = true;
+        }
 
         
     }
@@ -93,9 +106,29 @@ public class PauseMenuController : MonoBehaviour
     {
         player = FindAnyObjectByType<PlayerController>();
         string vidaRestante = player.vida.ToString();
-        string vida = "vida restante :";
+        string vida = "Vida restante :";
         vidaPlayer.text = vida + vidaRestante;
 
+        energyLabel.text = "Energia :" + player.energy;
+
+        playerMove = FindAnyObjectByType<PlayerMovement>();
+
+        if (isPlaying)
+        {
+            if (end > 0)
+            {
+                end -= Time.deltaTime;
+                ActualizarTexto(end);
+            }
+            else
+            {
+                end = 0f;
+                isPlaying = false;
+                ActualizarTexto(end);
+                LogicaTiempoTerminado();
+                playerMove.Morir();
+            }
+        }
     }
 
     // Método que se ejecuta cuando el nuevo Input System detecta la pulsación
@@ -131,5 +164,21 @@ public class PauseMenuController : MonoBehaviour
     {
         Time.timeScale = 1f; // Restablecer siempre el tiempo antes de cambiar de escena
         SceneManager.LoadScene("MainMenu");
+    }
+    void ActualizarTexto(float tiempoEnSegundos)
+    {
+        if (tiempoEnSegundos < 0f) tiempoEnSegundos = 0f;
+
+        // Operaciones matemáticas estándar para la variable flotante
+        int minutos = Mathf.FloorToInt(tiempoEnSegundos / 60f);
+        int segundos = Mathf.FloorToInt(tiempoEnSegundos % 60f);
+
+        // Asignamos el formato de minutos al texto de UI Toolkit
+        tiempoVidaLabel.text = "El juego termina en " + string.Format("{0:00}:{1:00}", minutos, segundos);
+    }
+
+    void LogicaTiempoTerminado()
+    {
+        Debug.Log("¡Tiempo agotado!");
     }
 }

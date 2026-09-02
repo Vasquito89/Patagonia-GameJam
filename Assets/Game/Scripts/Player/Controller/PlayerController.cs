@@ -18,7 +18,7 @@ namespace Goru.Controller
 
         [Header("Player Stats & Water")]
         public int vida = 20;
-        public int energy = 200;
+        public float energy = 200;
         [SerializeField] private float timeInvulnerable = 5f;
         public bool EstaCercaDelFuego = false;
         private bool invulnerable = false;
@@ -36,29 +36,39 @@ namespace Goru.Controller
         {
             PuedeUsarAgua = false;
         }
-        public void OnCollisionEnter(Collision collision)
+        /*public void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.CompareTag("Frutapala"))
             {
-                energy += 30;
+                energy += 10;
                 Destroy(collision.gameObject);
             }
             else if (collision.gameObject.CompareTag("Murtilla"))
             {
-                energy += 60;
+                energy += 15;
                 Destroy(collision.gameObject);
             }
             /*else if (collision.gameObject.CompareTag("Fire") && !invulnerable || !EstaCercaDelFuego)
             {
                 RecibirDano(20);
-            }*/
-        }
+            }
+        }*/
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag("Fire"))
             {
                 EstaCercaDelFuego = true;
                 RecibirDano(10);
+            }
+            if (other.gameObject.CompareTag("Frutapala"))
+            {
+                energy += 10;
+                Destroy(other.gameObject);
+            }
+            else if (other.gameObject.CompareTag("Murtilla"))
+            {
+                energy += 15;
+                Destroy(other.gameObject);
             }
         }
         private void OnTriggerExit(Collider other)
@@ -121,6 +131,12 @@ namespace Goru.Controller
             {
                 StartCoroutine(Invulnerabilidad());
             }
+        }
+        public void Cansancio(float cantidad)
+        {
+            energy -= cantidad;
+            if(energy <= 0)
+            {  _playerMovement.Morir();}
         }
         public IEnumerator CargarCubeta()
         {

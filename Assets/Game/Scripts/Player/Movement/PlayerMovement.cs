@@ -143,7 +143,14 @@ namespace Goru.Movement
             if (moveInput == Vector2.zero) return 0f;
 
             float targetSpeed = moveSpeed;
-            if (_input.SprintRequested) targetSpeed = sprintSpeed;
+
+            if (targetSpeed == moveSpeed)
+                _playerController.Cansancio(0.01f);
+            if (_input.SprintRequested)
+            { 
+                targetSpeed = sprintSpeed;
+                _playerController.Cansancio(0.03f);
+            }
 
             return targetSpeed;
         }
@@ -184,6 +191,7 @@ namespace Goru.Movement
         public void Morir()
         {
             _playerController.vida = 0;
+            _playerController.energy = 0;
             _anim?.SetDeath(true);
             Debug.Log("se ejecuto la animacion");
             _speed = 0f;

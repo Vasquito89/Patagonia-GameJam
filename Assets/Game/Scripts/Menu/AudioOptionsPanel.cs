@@ -15,22 +15,28 @@ public class AudioOptionsPanel : MonoBehaviour
     private string muteToggleName = "MuteToggle";
     private string acceptButtonName = "AcceptButton";
 
-    private VisualElement rootElement;
-    private ScrollView optionSV;
-    private ScrollView audioSV;
+    private UIDocument uiDocument;
+    private VisualElement rootElement; 
+    private VisualElement optionVE;
+    private VisualElement audioVE;
 
     [SerializeField] private InputActionAsset inputActions;
     private InputAction volverAction;
 
+    private void Awake()
+    {
+        uiDocument = GetComponent<UIDocument>();
+        if (uiDocument == null) return;
+    }
+
     private void OnEnable()
     {
-        UIDocument uiDocument = GetComponent<UIDocument>();
-        if (uiDocument == null) return;
-
         rootElement = uiDocument.rootVisualElement;
 
-        //optionSV = rootElement.Q<ScrollView>("OptionScrollView");
-        audioSV = rootElement.Q<ScrollView>("AudioScrollView");
+        optionVE = rootElement.Q<VisualElement>("OptionVE");
+        audioVE = rootElement.Q<VisualElement>("AudioVE");
+
+        
 
         if (AudioManager.Instance == null)
         {
@@ -48,7 +54,7 @@ public class AudioOptionsPanel : MonoBehaviour
         Debug.Log("Toggle encontrado? " + (toggle != null));
 
         // Registrar toggle SOLO cuando el panel esté visible
-        audioSV.RegisterCallback<GeometryChangedEvent>(evt =>
+        audioVE.RegisterCallback<GeometryChangedEvent>(evt =>
         {
             var toggle = rootElement.Q<Toggle>(muteToggleName);
             if (toggle != null)
@@ -70,11 +76,11 @@ public class AudioOptionsPanel : MonoBehaviour
         }
 
         // Botón Aceptar / Guardar
-        /*Button acceptBtn = rootElement.Q<Button>(acceptButtonName);
+        Button acceptBtn = rootElement.Q<Button>(acceptButtonName);
         if (acceptBtn != null)
         {
             acceptBtn.clicked += OnAcceptClicked;
-        }*/
+        }
     }
 
     private void OnDisable()
@@ -82,10 +88,10 @@ public class AudioOptionsPanel : MonoBehaviour
         if (rootElement == null) return;
 
         Button acceptBtn = rootElement.Q<Button>(acceptButtonName);
-        /*if (acceptBtn != null)
+        if (acceptBtn != null)
         {
             acceptBtn.clicked -= OnAcceptClicked;
-        }*/
+        }
         if (volverAction != null)
         {
             volverAction.performed -= OnBack;
@@ -102,22 +108,21 @@ public class AudioOptionsPanel : MonoBehaviour
         }
     }
 
-    /*private void OnAcceptClicked()
+    private void OnAcceptClicked()
     {
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlayClickAndSave();
         }
-
-        SceneManager.LoadScene("MainMenu");
-    }*/
+        optionVE.style.display = DisplayStyle.Flex;
+        audioVE.style.display = DisplayStyle.None;
+        //SceneManager.LoadScene("MainMenu");
+    }
     private void OnBack(InputAction.CallbackContext context)
     {
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlayClickAndSave();
-        }
-        SceneManager.LoadScene("MenuPrincipal");
+        optionVE.style.display = DisplayStyle.Flex;
+        audioVE.style.display = DisplayStyle.None;
+        //SceneManager.LoadScene("MainMenu");
     }
 }
 

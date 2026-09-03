@@ -4,6 +4,7 @@ using Goru.Inputs;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Goru.Movement;
 
 public class Fire : MonoBehaviour, IInteractable
 {
@@ -20,7 +21,7 @@ public class Fire : MonoBehaviour, IInteractable
     public bool extinguido = false;
 
     [Header("Temporizadores")]
-    [SerializeField] private float tiempoParaApagar = 5f; // Tiempo antes de expandirse
+    [SerializeField] private float tiempoParaApagar = 8f; // Tiempo antes de expandirse
     private float temporizadorConteo = 0f;
     private bool fuegoExpandido = false;
 
@@ -35,6 +36,7 @@ public class Fire : MonoBehaviour, IInteractable
     private Label advertenciaLabel;
     private Label vidaFuegoLabel;
     private Collider colFuego;
+    private PlayerMovement _playerMove;
 
     private void Awake()
     {
@@ -81,6 +83,8 @@ public class Fire : MonoBehaviour, IInteractable
 
     void Update()
     {
+        _playerMove = FindAnyObjectByType<PlayerMovement>();
+
         // Si el fuego se apagó, cortamos todo el Update inmediatamente
         if (extinguido) return;
 
@@ -110,11 +114,14 @@ public class Fire : MonoBehaviour, IInteractable
 
             if (tiempoFuego != null)
             {
-                //vida = vida + ((int)(0.01));
+                if (fire != null) fire.SetActive(false);
+                if (smoke != null) smoke.SetActive(true);
+                vida = vida + (int)((1) * Time.deltaTime);
                 vidaFuegoLabel.text = "Vida del fuego" + vida.ToString();
                 Debug.Log(vidaFuegoLabel.text);
                 tiempoFuego.style.display = DisplayStyle.Flex;
-                tiempoFuego.text = "¡FUEGO EXPANDIDO! Tiempo encendido: " + temporizadorConteo.ToString("F1") + "s";                
+                tiempoFuego.text = "¡FUEGO EXPANDIDO! Tiempo encendido: " + temporizadorConteo.ToString("F1") + "s";
+                FuegoDescontrolado();
             }
         }
     }
@@ -128,7 +135,7 @@ public class Fire : MonoBehaviour, IInteractable
         vida -= 20;
         vidaFuegoLabel.text = "Vida del fuego" + vida.ToString();
 
-        if (smoke != null) smoke.SetActive(true);
+        
 
 
         // Si se quedó sin vida, lo apagamos completamente
@@ -168,8 +175,18 @@ public class Fire : MonoBehaviour, IInteractable
         if (smoke != null) smoke.SetActive(false);
         if (colFuego != null) colFuego.enabled = false;
 
+        PlayerController playerController = FindAnyObjectByType<PlayerController>();
+        playerController.estaCercaDeFruta = false;
         // 3. Destruir objeto de escena
         Destroy(gameObject, 0.5f);
+    }
+
+    private void FuegoDescontrolado()
+    {
+        if (temporizadorConteo >= 40)
+        {
+            _playerMove.Morir();
+        }
     }
 
     IEnumerator ApagarLabel()

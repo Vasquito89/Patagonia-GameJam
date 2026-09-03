@@ -36,7 +36,7 @@ public class TransicionMenu : MonoBehaviour
     {
         if (!isTransicion)
         {
-            if (time > 5)
+            if (time > 10)
             {
                 SceneManager.LoadScene("Nivel1");
             }

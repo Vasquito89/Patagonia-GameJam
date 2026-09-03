@@ -199,5 +199,13 @@ namespace Goru.Movement
             Time.timeScale = 0f;
             
         }
+        public void EatAnim()
+        {
+            if(_input.EatRequested)
+            {
+                _anim?.SetEat(true);
+                _input.ConsumeEat();
+            }
+        }
     }
 }

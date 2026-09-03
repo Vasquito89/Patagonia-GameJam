@@ -15,6 +15,7 @@ namespace Goru.Inputs
         public bool AnalogMovement { get; private set; }
         public bool BaldeRequested { get; private set; }
         public bool SecarRequested { get; private set; }
+        public bool EatRequested { get; private set; }
 
         private float sprintHoldTime = 0f;
         private const float sprintThreshold = 0.25f; // tiempo para activar sprint
@@ -63,6 +64,10 @@ namespace Goru.Inputs
         {
                 SecarRequested = value.Get<float>() > 0.5f; 
         }
+        public void OnEat(InputValue value)
+        {
+            EatRequested = value.Get<float>() > 0.5f;
+        }
 
         private void Update()
         {
@@ -83,5 +88,6 @@ namespace Goru.Inputs
         { SprintRequested = false; }
         public void ConsumeBalde() { BaldeRequested = false; }
         public void ConsumeSecar() { SecarRequested = false; }
+        public void ConsumeEat() { EatRequested = false; }
     }
 }

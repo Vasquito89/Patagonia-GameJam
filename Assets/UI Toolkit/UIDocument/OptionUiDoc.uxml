@@ -3,15 +3,16 @@
     <Style src="project://database/Assets/UI%20Toolkit/StyleSS/ButtonMenu.uss?fileID=7433441132597879392&amp;guid=d1f9424b447fddf4bb52be483951f4fc&amp;type=3#ButtonMenu"/>
     <Style src="project://database/Assets/UI%20Toolkit/StyleSS/DropdownPantalla.uss?fileID=7433441132597879392&amp;guid=946758bdb5b771843b19d2a4304393f9&amp;type=3#DropdownPantalla"/>
     <ui:VisualElement style="flex-grow: 1;">
-        <ui:VisualElement name="OptionVE" style="flex-grow: 1; display: flex; background-image: url(&quot;project://database/Assets/UI%20Toolkit/RenderTexture/OptionRenderTexture.renderTexture?fileID=8400000&amp;guid=6a254a9969bcad344a83692d479b271e&amp;type=2#OptionRenderTexture&quot;);">
+        <ui:VisualElement name="OptionVE" style="flex-grow: 1; display: none; background-image: url(&quot;project://database/Assets/UI%20Toolkit/RenderTexture/OptionRenderTexture.renderTexture?fileID=8400000&amp;guid=6a254a9969bcad344a83692d479b271e&amp;type=2#OptionRenderTexture&quot;);">
             <ui:ScrollView name="OptionScrollView" style="position: absolute; top: 458px; left: 609px; height: 233px; width: 372px;">
                 <ui:Button text="pantalla" name="DisplayButton" class="Select" style="font-size: 28px;"/>
                 <ui:Button text="audio" name="AudioButton" class="Select" style="font-size: 28px;"/>
                 <ui:Button text="creditos" name="CreditButton" class="Select" style="font-size: 28px;"/>
             </ui:ScrollView>
             <ui:Label text="Opciones" style="position: absolute; top: 55px; left: 310px; -unity-font-definition: url(&quot;project://database/Assets/Font/PermanentMarker-Regular.ttf?fileID=12800000&amp;guid=a7d5317f9d25264438ce7ec818286067&amp;type=3#PermanentMarker-Regular&quot;); color: rgb(255, 255, 255); font-size: 38px;"/>
+            <ui:Label text="[ESC] para salir" style="position: absolute; top: 700px; left: 53px; font-size: 38px; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/Font/BebasNeue-Regular.ttf?fileID=12800000&amp;guid=6855240a754d7bd4e8adafe1bc946d4e&amp;type=3#BebasNeue-Regular&quot;);"/>
         </ui:VisualElement>
-        <ui:VisualElement name="AudioVE" style="flex-grow: 1; display: none;">
+        <ui:VisualElement name="AudioVE" style="flex-grow: 1; display: none; background-image: url(&quot;project://database/Assets/Game/Texture/Menu/PantallaAudio.jpeg?fileID=2800000&amp;guid=c597e8c645044b148bcc04bb575911ae&amp;type=3#PantallaAudio&quot;);">
             <ui:Label text="Opciones de Audio" style="position: absolute; top: 25px; left: 61px; -unity-font-definition: url(&quot;project://database/Assets/Font/PermanentMarker-Regular.ttf?fileID=12800000&amp;guid=a7d5317f9d25264438ce7ec818286067&amp;type=3#PermanentMarker-Regular&quot;); color: rgb(255, 255, 255); width: 431px; font-size: 38px;"/>
             <ui:ScrollView name="AudioScrollView" style="position: absolute; height: 372px; width: 575px; top: 153px; left: 64px;">
                 <ui:Slider label="Sonido General" value="42" high-value="100" name="SoundGralSlider" class="SelectSlider"/>
@@ -27,8 +28,8 @@
             <ui:Label text="[Esc] para salir" style="position: absolute; font-size: 32px; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/Font/BebasNeue-Regular.ttf?fileID=12800000&amp;guid=6855240a754d7bd4e8adafe1bc946d4e&amp;type=3#BebasNeue-Regular&quot;); top: 702px; left: 21px;"/>
         </ui:VisualElement>
         <ui:VisualElement name="JoistickVE" style="flex-grow: 1; display: none;"/>
-        <ui:VisualElement name="PantallaVE" style="flex-grow: 1; display: none;">
-            <ui:Label text="pantalla" style="position: absolute; top: 88px; left: 315px; font-size: 40px; -unity-font-definition: url(&quot;project://database/Assets/Font/PermanentMarker-Regular.ttf?fileID=12800000&amp;guid=a7d5317f9d25264438ce7ec818286067&amp;type=3#PermanentMarker-Regular&quot;); color: rgb(255, 255, 255);"/>
+        <ui:VisualElement name="PantallaVE" style="flex-grow: 1; display: flex; background-image: url(&quot;project://database/Assets/Game/Texture/Menu/PantallaScreen.jpeg?fileID=2800000&amp;guid=d9c93019fc41e234e87729a3447e1a6f&amp;type=3#PantallaScreen&quot;);">
+            <ui:Label text="pantalla" style="position: absolute; top: 88px; left: 315px; font-size: 40px; -unity-font-definition: url(&quot;project://database/Assets/Font/PermanentMarker-Regular.ttf?fileID=12800000&amp;guid=a7d5317f9d25264438ce7ec818286067&amp;type=3#PermanentMarker-Regular&quot;); color: rgb(7, 7, 7);"/>
             <ui:ScrollView name="PantallaScrollView" style="position: absolute; top: 232px; left: 162px; width: 749px; height: 369px;">
                 <ui:DropdownField label="Resolucion" name="ResolutionDropdown"/>
                 <ui:DropdownField label="Modo de pantalla" name="ScreenModeDropdown"/>

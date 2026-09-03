@@ -20,6 +20,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private InputProvider _input;
 
+
     private void Awake()
     {
         _playerController = GetComponent<PlayerController>();
@@ -41,7 +42,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Update()
     { 
         businessRaycast();
-        if (_input.SecarRequested)
+        if (_input.SecarRequested || _input.EatRequested)
         {
             OnInteractInput();
         }
@@ -78,7 +79,13 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log("Pulsaste la tecla para interactuar");
             _currentInteractable.Interact(_playerController);
+
+            if(gameObject.CompareTag("Fire"))
             _input.ConsumeSecar();
+            else if (gameObject.CompareTag("Frutapala") || gameObject.CompareTag("Murtilla"))
+            _input.ConsumeEat();
+            //else if(gameObject.CompareTag("Murtilla"))
+            //_input.ConsumeEat();
         }
     }
 

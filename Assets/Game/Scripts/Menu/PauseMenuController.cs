@@ -31,7 +31,7 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private InputActionAsset inputActions;
     private InputAction pauseAction;
 
-    private float end = 180f;
+    public float end = 180f;
     private bool isPlaying = false;
 
     void Awake()

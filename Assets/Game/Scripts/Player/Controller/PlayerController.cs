@@ -21,16 +21,19 @@ namespace Goru.Controller
         public float energy = 200;
         [SerializeField] private float timeInvulnerable = 5f;
         public bool EstaCercaDelFuego = false;
+        public bool estaCercaDeFruta = false;
         private bool invulnerable = false;
         [SerializeField] private bool estaEnAgua = false;
 
         private InputProvider _input;
         private PlayerMovement _playerMovement;
+        private PauseMenuController _pauseMenuController;
 
         private void Awake()
         {
             _input = GetComponent<InputProvider>();
             _playerMovement = GetComponent<PlayerMovement>();
+            _pauseMenuController = FindAnyObjectByType<PauseMenuController>();
         }
         private void Start()
         {
@@ -60,22 +63,36 @@ namespace Goru.Controller
                 EstaCercaDelFuego = true;
                 RecibirDano(10);
             }
-            if (other.gameObject.CompareTag("Frutapala"))
+            if (other.CompareTag("Frutapala") || other.CompareTag("Murtilla"))
             {
+                estaCercaDeFruta = true; // Solo marcamos que estamos en área
+            }
+            /*if (other.gameObject.CompareTag("Frutapala"))
+            {
+                estaCercaDeFruta = true;
+                Eat(10, 3);
                 energy += 10;
+                _pauseMenuController.end += 3f;
                 Destroy(other.gameObject);
             }
             else if (other.gameObject.CompareTag("Murtilla"))
             {
                 energy += 15;
+                _pauseMenuController.end += 5f;
                 Destroy(other.gameObject);
-            }
+                estaCercaDeFruta = true;
+                Eat(15,5);
+            }*/
         }
         private void OnTriggerExit(Collider other)
         {
             if (other.gameObject.CompareTag("Fire"))
             {
                 EstaCercaDelFuego = false;
+            }
+            if (other.CompareTag("Frutapala") || other.CompareTag("Murtilla"))
+            {
+                estaCercaDeFruta = false;
             }
         }
 
@@ -152,6 +169,13 @@ namespace Goru.Controller
             invulnerable = true;
             yield return new WaitForSeconds(timeInvulnerable);
             invulnerable = false;
+        }
+        public void Eat(float cantidad, float time )
+        {
+            _playerMovement.EatAnim();
+            energy += cantidad;
+            _pauseMenuController.end += time;
+            estaCercaDeFruta = false;
         }
     }
 }

@@ -23,7 +23,7 @@
             <ui:Label text="Perdiste!" name="DerrotaLabel" style="position: absolute; top: 223px; left: 411px; width: 156px; height: 48px; font-size: 35px; background-color: rgb(87, 83, 83); color: rgb(255, 255, 255);"/>
             <ui:Button text="Menu" name="MenuButton" class="SelectButton" style="position: absolute; top: 375px; left: 443px; width: 155px;"/>
         </ui:VisualElement>
-        <ui:VisualElement name="VictoriaVE" style="flex-grow: 1; display: none; width: 1024px; height: 768px;">
+        <ui:VisualElement name="VictoriaVE" style="flex-grow: 1; display: none; width: 1024px; height: 768px; background-image: url(&quot;project://database/Assets/UI%20Toolkit/RenderTexture/VictoryRenderTexture.renderTexture?fileID=8400000&amp;guid=33e2f0ce24d437b4ea92f32895bcaeba&amp;type=2#VictoryRenderTexture&quot;);">
             <ui:Label text="Has ganado" name="VictoriaLabel" style="position: absolute; top: 173px; left: 394px; font-size: 35px; color: rgb(255, 255, 255); background-color: rgb(87, 83, 83);"/>
             <ui:Button text="Aceptar" name="AceptarButton" class="SelectButton" style="position: absolute; top: 409px; left: 418px;"/>
         </ui:VisualElement>

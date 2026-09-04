@@ -1,3 +1,4 @@
+using Goru.Controller;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,16 +10,21 @@ public class FireControl : MonoBehaviour
     private VisualElement rootVisualElement;
     private Label advertenciaLabel;
     private Label vidaFuegoLabel;
+    private PlayerController playerController;
+    private void Update()
+    {
+        playerController = FindAnyObjectByType<PlayerController>();
+    }
 
     private void OnEnable()
     {
         rootVisualElement = uiDocument.rootVisualElement;
         advertenciaLabel = rootVisualElement.Q<Label>("AdvertenciaLabel");
-        vidaFuegoLabel = rootVisualElement.Q<Label>("VidaFuegoLabel");
+        vidaFuegoLabel = rootVisualElement.Q<Label>("VidaFuegoLabel");      
     }
     private void Start()
     {
-        fire.SetActive (false);
+        fire.SetActive (false);       
     }
 
     private void OnTriggerEnter(Collider colission)
@@ -27,6 +33,7 @@ public class FireControl : MonoBehaviour
         {
             advertenciaLabel.style.display = DisplayStyle.Flex;
             fire.SetActive(true);
+            if (playerController != null) playerController.bucket.SetActive(true);
             vidaFuegoLabel.style.display = DisplayStyle.Flex;
             Destroy(gameObject);
 

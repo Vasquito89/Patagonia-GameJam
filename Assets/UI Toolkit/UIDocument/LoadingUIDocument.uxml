@@ -1,9 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/StyleSS/ProgressBarLoading.uss?fileID=7433441132597879392&amp;guid=571e9a2322232cc4ab07fc53cbb2217a&amp;type=3#ProgressBarLoading"/>
     <ui:VisualElement style="flex-grow: 1;">
-        <ui:VisualElement name="LoadingVE" style="flex-grow: 1; display: flex; background-image: url(&quot;project://database/Assets/UI%20Toolkit/RenderTexture/LoadingRT.renderTexture?fileID=8400000&amp;guid=242630460269dbf4b89c69082ecc9d1d&amp;type=2#LoadingRT&quot;);">
-            <ui:ProgressBar value="22" title="my-progress" name="ProgressBar" style="position: absolute; top: 689px; left: 747px; width: 135px; height: 34px;"/>
-        </ui:VisualElement>
+        <ui:VisualElement name="LoadingVE" style="flex-grow: 1; display: flex; background-image: url(&quot;project://database/Assets/UI%20Toolkit/RenderTexture/LoadingRT.renderTexture?fileID=8400000&amp;guid=242630460269dbf4b89c69082ecc9d1d&amp;type=2#LoadingRT&quot;);"/>
         <ui:VisualElement name="StartVE" style="flex-grow: 1; display: none; background-image: url(&quot;project://database/Assets/Game/Texture/Menu/PantallaPressKey.png?fileID=2800000&amp;guid=a0da56219a2017442866185615b92d11&amp;type=3#PantallaPressKey&quot;);">
             <ui:Label text="Presiona una tecla" name="PressKeyLabel" style="position: absolute; top: 208px; left: 289px; width: 131px; -unity-font-definition: url(&quot;project://database/Assets/Font/BebasNeue-Regular.ttf?fileID=12800000&amp;guid=6855240a754d7bd4e8adafe1bc946d4e&amp;type=3#BebasNeue-Regular&quot;); font-size: 20px; color: rgb(255, 255, 255);"/>
         </ui:VisualElement>

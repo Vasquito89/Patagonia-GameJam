@@ -13,10 +13,10 @@ public class Fruit : MonoBehaviour, IInteractable
     public void Interact(PlayerController player)
     {
         // Validamos si el jugador tiene agua lista para usar
-        if (player.estaCercaDeFruta)
-        {
+        //if (player.estaCercaDeFruta)
+        //{
             player.Eat(cantidad, time); // comer y dar tiempo
             Destroy(gameObject);
-        }
+        //}
     }
 }

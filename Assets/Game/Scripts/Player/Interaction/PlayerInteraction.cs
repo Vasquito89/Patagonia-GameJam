@@ -3,11 +3,12 @@ using Goru.Inputs;
 using Goru.Controller;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Guru.Gameplay;
 
 public class PlayerInteraction : MonoBehaviour
 {
     [Header("Configuración Raycast")]
-    [SerializeField] private float reachDistance = 10.0f;
+    private float reachDistance = 100.0f;
     [SerializeField] private LayerMask interactableLayer;
     [SerializeField] private Transform cameraTransform;
 
@@ -20,13 +21,14 @@ public class PlayerInteraction : MonoBehaviour
 
     private InputProvider _input;
 
-
+    private GameManager _gameManager;
     private void Awake()
     {
         _playerController = GetComponent<PlayerController>();
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
         _input = GetComponent<InputProvider>();
+        _gameManager = FindAnyObjectByType<GameManager>();
     }
 
     private void OnEnable()
@@ -56,6 +58,7 @@ public class PlayerInteraction : MonoBehaviour
     private void businessRaycast()
     {
         Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+        Debug.DrawRay(cameraTransform.position, cameraTransform.forward * reachDistance, Color.green);
 
         if (Physics.Raycast(ray, out RaycastHit hit, reachDistance, interactableLayer))
         {
@@ -68,6 +71,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        _gameManager.NatureAudio();
         _currentInteractable = null;
         HidePrompt();
     }

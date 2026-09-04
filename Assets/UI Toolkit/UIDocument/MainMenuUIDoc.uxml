@@ -1,10 +1,20 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/StyleSS/ButtonMenu.uss?fileID=7433441132597879392&amp;guid=d1f9424b447fddf4bb52be483951f4fc&amp;type=3#ButtonMenu"/>
     <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI%20Toolkit/RenderTexture/MenuRenderTexture.renderTexture?fileID=8400000&amp;guid=1752a75040d269346ab0eb69d72cdb6d&amp;type=2#MenuRenderTexture&quot;);">
-        <ui:ScrollView focusable="false" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" nested-interaction-kind="ForwardScrolling" style="position: absolute; top: 390px; left: 345px; width: 337px; height: 236px;">
+        <ui:ScrollView focusable="false" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" nested-interaction-kind="ForwardScrolling" style="position: absolute; top: 390px; left: 345px; width: 349px; height: 340px; display: flex;">
             <ui:Button text="Jugar" name="MatchButton" class="Select"/>
             <ui:Button text="Opciones" name="OptionButton" class="Select"/>
+            <ui:Button text="mando" name="MandoButton" class="Select"/>
+            <ui:Button text="creditos" name="CreditButton" class="Select"/>
             <ui:Button text="Salir" name="QuitButton" class="Select"/>
         </ui:ScrollView>
+        <ui:VisualElement name="CreditsVE" style="flex-grow: 1; position: absolute; height: 462px; width: 544px; top: 256px; left: 242px; display: none;">
+            <ui:Label text="Label" name="CreditLabel" style="font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Font/BebasNeue-Regular.ttf?fileID=12800000&amp;guid=6855240a754d7bd4e8adafe1bc946d4e&amp;type=3#BebasNeue-Regular&quot;); color: rgb(255, 255, 255);"/>
+            <ui:Button text="Aceptar" name="ExitCreditButton" class="Select" style="position: absolute; top: 398px; left: 110px;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="MandosVE" style="flex-grow: 1; display: none;">
+            <ui:Label text="Label" name="MandoLabel" style="position: absolute; top: 268px; left: 320px; height: 193px; width: 397px; font-size: 28px; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/Font/BebasNeue-Regular.ttf?fileID=12800000&amp;guid=6855240a754d7bd4e8adafe1bc946d4e&amp;type=3#BebasNeue-Regular&quot;);"/>
+            <ui:Button text="Aceptar" name="ExitMandoButton" class="Select" style="position: absolute; top: 616px; left: 338px;"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -37,6 +37,7 @@ public class Fire : MonoBehaviour, IInteractable
     private Label vidaFuegoLabel;
     private Collider colFuego;
     private PlayerMovement _playerMove;
+    private PlayerController playerController;
 
     private void Awake()
     {
@@ -84,6 +85,7 @@ public class Fire : MonoBehaviour, IInteractable
     void Update()
     {
         _playerMove = FindAnyObjectByType<PlayerMovement>();
+        playerController = FindAnyObjectByType<PlayerController>();
 
         // Si el fuego se apagó, cortamos todo el Update inmediatamente
         if (extinguido) return;
@@ -116,7 +118,7 @@ public class Fire : MonoBehaviour, IInteractable
             {
                 if (fire != null) fire.SetActive(false);
                 if (smoke != null) smoke.SetActive(true);
-                vida = vida + (int)((1) * Time.deltaTime);
+                vida = vida + (int)((10) * Time.deltaTime);
                 vidaFuegoLabel.text = "Vida del fuego" + vida.ToString();
                 Debug.Log(vidaFuegoLabel.text);
                 tiempoFuego.style.display = DisplayStyle.Flex;
@@ -135,7 +137,10 @@ public class Fire : MonoBehaviour, IInteractable
         vida -= 20;
         vidaFuegoLabel.text = "Vida del fuego" + vida.ToString();
 
-        
+        playerController.bucket.SetActive(false);
+        playerController.waterBucket.SetActive(false);
+        Debug.Log(playerController.waterBucket);
+        Debug.Log(playerController.bucket);
 
 
         // Si se quedó sin vida, lo apagamos completamente

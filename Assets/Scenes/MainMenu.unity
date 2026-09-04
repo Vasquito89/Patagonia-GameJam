@@ -504,6 +504,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlaylistManager
   indiceActual: 0
   aleatorio: 1
+  matchSceneName:
+  - Nivel1
+  - Transicion
 --- !u!114 &1683638225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,7 +531,7 @@ AudioSource:
   m_GameObject: {fileID: 1683638223}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6578807854906764922, guid: 8f73f5e88aa26834f871215d5c10067c, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1

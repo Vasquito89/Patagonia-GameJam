@@ -12,10 +12,8 @@ public class OptionMenu : MonoBehaviour
     private VisualElement optionVE;
     private VisualElement audioVE;
     private VisualElement displayVE;
-    private VisualElement creditVE;
     private Button displayButton;
     private Button audioButton;
-    private Button creditButton;
     private Slider soundGeneralSlider;
     private Slider menuGralSlider;
     private Slider fxSoundSlider;
@@ -42,19 +40,15 @@ public class OptionMenu : MonoBehaviour
         optionVE = rootVisualElement.Q<VisualElement>("OptionVE");
         audioVE = rootVisualElement.Q<VisualElement>("AudioVE");
         displayVE = rootVisualElement.Q<VisualElement>("PantallaVE");
-        creditVE = rootVisualElement.Q<VisualElement>("CreditVE");
 
         optionVE.style.display = DisplayStyle.Flex;
         audioVE.style.display = DisplayStyle.None;
         displayVE.style.display = DisplayStyle.None;
-        creditVE.style.display = DisplayStyle.None;
 
 
         displayButton = rootVisualElement.Q<Button>("DisplayButton");
         audioButton = rootVisualElement.Q<Button>("AudioButton");
-        creditButton = rootVisualElement.Q<Button>("CreditButton");
         Debug.Log(displayButton);
-        Debug.Log(creditButton);
         Debug.Log(audioButton);
 
         if (audioButton != null) audioButton.clicked += ShowOptionAudio;

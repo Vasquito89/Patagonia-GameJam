@@ -66,18 +66,32 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2f401d77dbab433439808be9de322970, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 673233527009706205}
+      addedObject: {fileID: -3370212463776671003}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2f401d77dbab433439808be9de322970, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -3370212463776671003}
+      addedObject: {fileID: -691415026135030692}
   m_SourcePrefab: {fileID: 100100000, guid: 2f401d77dbab433439808be9de322970, type: 3}
 --- !u!1 &8447908558104824390 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2f401d77dbab433439808be9de322970, type: 3}
   m_PrefabInstance: {fileID: 8790016858840315671}
   m_PrefabAsset: {fileID: 0}
---- !u!135 &673233527009706205
-SphereCollider:
+--- !u!114 &-3370212463776671003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8447908558104824390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d789a165a67892b4ea2ed95d61914787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fruit
+  time: 3
+  cantidad: 10
+--- !u!136 &-691415026135030692
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,20 +108,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.004639217
-  m_Center: {x: -0.0006203967, y: 5.9275614e-12, z: 0.0016815168}
---- !u!114 &-3370212463776671003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8447908558104824390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d789a165a67892b4ea2ed95d61914787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Fruit
-  time: 3
-  cantidad: 10
+  serializedVersion: 2
+  m_Radius: 0.008
+  m_Height: 0.05
+  m_Direction: 1
+  m_Center: {x: -0.0000019553117, y: 0.00000437189, z: 0.000016419508}

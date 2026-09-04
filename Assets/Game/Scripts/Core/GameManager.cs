@@ -12,10 +12,14 @@ namespace Guru.Gameplay
         [SerializeField] private GameObject blueberryPrefab;
         [SerializeField] private GameObject strawberryPrefab;
 
+        [SerializeField] private AudioSource natureAudio;
+
         private void Start()
         {
             SpawnPlayer();
             SpawnFruit();
+
+            natureAudio.volume = 0.4f;
         }
 
         void SpawnPlayer()
@@ -58,6 +62,13 @@ namespace Guru.Gameplay
                 Instantiate(strawberryPrefab, availablePoints[i].position, availablePoints[i].rotation);
             }
         
+        }
+        public void NatureAudio()
+        {
+            natureAudio.minDistance = 1f;
+            natureAudio.maxDistance = 5f;
+            natureAudio.volume = 0.2f;
+
         }
 
     }

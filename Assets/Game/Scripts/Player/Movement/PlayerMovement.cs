@@ -161,7 +161,7 @@ namespace Goru.Movement
             {
                 _fallTimeoutDelta = fallTimeout;
                 _anim?.SetJump(false);
-                _anim?.SetFreeFall(false);
+                //_anim?.SetFreeFall(false);
 
                 if (_verticalVelocity < 0f) _verticalVelocity = -2f;
 
@@ -174,7 +174,7 @@ namespace Goru.Movement
 
                 if (_jumpTimeoutDelta >= 0f) _jumpTimeoutDelta -= Time.deltaTime;
             }
-            else
+            /*else
             {
                 _jumpTimeoutDelta = jumpTimeout;
 
@@ -182,7 +182,7 @@ namespace Goru.Movement
                     _fallTimeoutDelta -= Time.deltaTime;
                 else
                     _anim?.SetFreeFall(true);
-            }
+            }*/
 
             if (_verticalVelocity < _terminalVelocity)
                 _verticalVelocity += gravity * Time.deltaTime;

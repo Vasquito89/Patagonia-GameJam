@@ -25,6 +25,9 @@ namespace Goru.Controller
         private bool invulnerable = false;
         [SerializeField] private bool estaEnAgua = false;
 
+        public GameObject bucket;
+        public GameObject waterBucket;
+
         private InputProvider _input;
         private PlayerMovement _playerMovement;
         private PauseMenuController _pauseMenuController;
@@ -39,23 +42,7 @@ namespace Goru.Controller
         {
             PuedeUsarAgua = false;
         }
-        /*public void OnCollisionEnter(Collision collision)
-        {
-            if (collision.gameObject.CompareTag("Frutapala"))
-            {
-                energy += 10;
-                Destroy(collision.gameObject);
-            }
-            else if (collision.gameObject.CompareTag("Murtilla"))
-            {
-                energy += 15;
-                Destroy(collision.gameObject);
-            }
-            /*else if (collision.gameObject.CompareTag("Fire") && !invulnerable || !EstaCercaDelFuego)
-            {
-                RecibirDano(20);
-            }
-        }*/
+        
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag("Fire"))
@@ -67,22 +54,6 @@ namespace Goru.Controller
             {
                 estaCercaDeFruta = true; // Solo marcamos que estamos en área
             }
-            /*if (other.gameObject.CompareTag("Frutapala"))
-            {
-                estaCercaDeFruta = true;
-                Eat(10, 3);
-                energy += 10;
-                _pauseMenuController.end += 3f;
-                Destroy(other.gameObject);
-            }
-            else if (other.gameObject.CompareTag("Murtilla"))
-            {
-                energy += 15;
-                _pauseMenuController.end += 5f;
-                Destroy(other.gameObject);
-                estaCercaDeFruta = true;
-                Eat(15,5);
-            }*/
         }
         private void OnTriggerExit(Collider other)
         {
@@ -160,9 +131,12 @@ namespace Goru.Controller
             Debug.Log("Entro a CargarCubeta");
             CargandoAgua = true;
             yield return new WaitForSeconds(2.0f); // Simulación de tiempo de llenado
+            waterBucket.SetActive(true);
+            Debug.Log(waterBucket);
             CubetaVacia = false;
             PuedeUsarAgua = true;
             CargandoAgua = false;
+            
         }
         IEnumerator Invulnerabilidad()
         {

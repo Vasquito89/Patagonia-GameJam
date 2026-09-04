@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class Lake : MonoBehaviour
 {
     [SerializeField] private UIDocument uiDocument;
+    [SerializeField] private AudioSource waterAudio;
     private Label _promptLabel;
 
     private string mensajePrompt = "Presiona [Q] para cargar agua";
@@ -29,6 +30,9 @@ public class Lake : MonoBehaviour
             _promptLabel.text = mensajePrompt;
             _promptLabel.style.display = DisplayStyle.Flex;
 
+            waterAudio.volume = 0.3f;
+            waterAudio.Play();
+
             /*if (other.TryGetComponent<PlayerController>(out var player) &&
                 other.TryGetComponent<InputProvider>(out var input))
             {
@@ -48,6 +52,7 @@ public class Lake : MonoBehaviour
         {
             // Muestra la UI desde el gestor o interfaz
             _promptLabel.style.display = DisplayStyle.None;
+            waterAudio?.Stop();
         }
     }
 }

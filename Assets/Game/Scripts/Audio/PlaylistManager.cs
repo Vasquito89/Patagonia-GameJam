@@ -27,7 +27,7 @@ public class PlaylistManager : MonoBehaviour
 
     //[Header("Configuración de Escenas")]
     [Tooltip("Nombre de la escena de partido donde NO debe sonar la música")]
-    private string matchSceneName = "Nivel1";
+    [SerializeField] private List<string> matchSceneName = new List<string>();
 
     private AudioSource audioSource;
     private bool isPausedByScene = false;
@@ -85,7 +85,7 @@ public class PlaylistManager : MonoBehaviour
 
     private void OnLoadingScene(Scene scene, LoadSceneMode modo)
     {
-        if (scene.name == matchSceneName)
+        if (matchSceneName.Contains(scene.name))
         {
             isPausedByScene = true;
             audioSource.Pause();

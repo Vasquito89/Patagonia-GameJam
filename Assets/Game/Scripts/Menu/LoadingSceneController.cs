@@ -11,16 +11,13 @@ public class LoadingSceneController : MonoBehaviour
 {
     [SerializeField] private VideoPlayer videoPlayer;
 
-    private float minLoadTime = 4f;
     private string nextSceneName = "MainMenu";
 
     private string loadingPanelName = "LoadingVE";
     private string pressKeyPanelName = "StartVE";
-    private string progressBarName = "ProgressBar";
 
     private VisualElement loadingGamePanel;
     private VisualElement pressAnyKeyPanel;
-    private ProgressBar progressBar;
 
     private bool videoTerminado = false;
     private bool canContinue = false;
@@ -46,18 +43,10 @@ public class LoadingSceneController : MonoBehaviour
         // Obtener referencias de UI Toolkit
         loadingGamePanel = root.Q<VisualElement>(loadingPanelName);
         pressAnyKeyPanel = root.Q<VisualElement>(pressKeyPanelName);
-        progressBar = root.Q<ProgressBar>(progressBarName);
 
         // Estado inicial de la UI
         if (loadingGamePanel != null) loadingGamePanel.style.display = DisplayStyle.Flex;
         if (pressAnyKeyPanel != null) pressAnyKeyPanel.style.display = DisplayStyle.None;
-
-        if (progressBar != null)
-        {
-            progressBar.lowValue = 0f;
-            progressBar.highValue = 100f;
-            progressBar.value = 0f;
-        }
 
         if (videoPlayer != null)
         {
@@ -93,24 +82,10 @@ public class LoadingSceneController : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        // Actualizar la barra de progreso basada puramente en el tiempo del video (10 segundos)
-        if (videoPlayer != null && videoPlayer.isPlaying && progressBar != null && !videoTerminado)
-        {
-            if (videoPlayer.length > 0)
-            {
-                float progreso = (float)(videoPlayer.time / videoPlayer.length) * 100f;
-                progressBar.value = progreso;
-            }
-        }
-    }
 
     private void AlTerminarVideo(VideoPlayer vp)
     {
         videoTerminado = true;
-
-        if (progressBar != null) progressBar.value = 100f;
 
         // Intercambiar visibilidad de pantallas
         if (loadingGamePanel != null) loadingGamePanel.style.display = DisplayStyle.None;
